@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")/.."
+
+source .env
+
+if [ -f "$PROJECT_NAME/README.md" ]; then
+    echo "Project $PROJECT_NAME already exists. Please choose a different name or remove the existing project."
+    exit 1
+fi
+
+mkdir -p $PROJECT_NAME
+
+docker run --rm                    \
+    -u $UID                        \
+    -v ./$PROJECT_NAME:/project    \
+    -w /project                    \
+    espressif/idf:$ESP_IDF_VERSION \
+    bash -c "cp -r /opt/esp/idf/examples/get-started/hello_world/* /project"

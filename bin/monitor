@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")/.."
+
+source .env
+
+docker run --rm -it                \
+    -u $UID                        \
+    -v ./$PROJECT_NAME:/project    \
+    --device=/dev/ttyUSB0          \
+    -w /project                    \
+    espressif/idf:$ESP_IDF_VERSION \
+    idf.py monitor
